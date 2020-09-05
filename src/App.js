@@ -1,8 +1,12 @@
 import React from 'react';
-import {Button, Grid, } from '@material-ui/core';
-import { AppBar, Container, Toolbar, IconButton, Typography, Box, Paper, Card,CardMedia, CardContent, CardActions } from '@material-ui/core';
+import {Button, Grid, BottomNavigation, BottomNavigationAction, Dialog, DialogContent, } from '@material-ui/core';
+import { AppBar, Container, Toolbar, IconButton, Typography, Box, Paper, Card,CardMedia, CardContent, CardActions, TextField, DialogTitle, DialogContentText, DialogActions } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import LayerIcon from '@material-ui/icons/Layers';
+import RestoreIcon from '@material-ui/icons/Restore'
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import LocationOnIcon from '@material-ui/icons/LocationOn'
+import FolderIcon from '@material-ui/icons/Folder'
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -53,6 +57,20 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+
+  const [ value, setValue ] = React.useState("recents")
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  }
+
+  const [ open, setOpen ] = React.useState(false)
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   const cards = [1,2,3,4,5,6,7,8,9];
   return (
     <>
@@ -64,7 +82,33 @@ function App() {
           </IconButton>
           <Typography className={classes.title} variant="h6">Pug</Typography>
           <Box mr={3}>
-            <Button color="inherit" variant="outlined"> Log in</Button>
+            <Button color="inherit" variant="outlined" onClick={handleClickOpen}> Log in</Button>
+         
+         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Log in</DialogTitle>
+          <DialogContent >
+            <DialogContentText>Log in to see video</DialogContentText>
+            <TextField 
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email adress"
+            type="email"
+            foolWidth/>
+            <TextField 
+            autoFocus
+            margin="dense"
+            id="pass"
+            label="Password"
+            type="password"
+            foolWidth/>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">Cancel</Button>
+            <Button onClick={handleClose} color="primary">Log in</Button>
+          </DialogActions>
+         </Dialog>
+
           </Box>
           <Button color="secondary" variant="contained"> Sign Up </Button>
         </Toolbar>
@@ -128,10 +172,9 @@ function App() {
               <Grid item>
                 <Button variant="contained" color="primary">Start now</Button>
               </Grid>
-              <Grid>
-                <Button variant="outlined" color="primary">Learn more</Button>
+              <Grid item>
+                <Button variant="contained" color="primary">Learn more</Button>
               </Grid>
-
             </Grid>
           </div>
         </Container>
@@ -169,6 +212,32 @@ function App() {
         </Grid>
       </Container>
     </main>
+    <footer>
+      <Typography variant="h6" align="center" gutterBottom>Footer</Typography>
+      <BottomNavigation value={value} onChange="handleChange" className={classes.root}>
+      <BottomNavigationAction
+        label="Recents"
+        value="recents"
+        icon={<RestoreIcon />}
+      />
+      <BottomNavigationAction
+        label="Favorites"
+        value="favorites"
+        icon={<FavoriteIcon />}
+      />
+      <BottomNavigationAction
+        label="Nearby"
+        value="nearby"
+        icon={<LocationOnIcon />}
+      />
+      <BottomNavigationAction
+        label="Folder"
+        value="folder"
+        icon={<FolderIcon />}
+      />
+      </BottomNavigation>
+      <Typography align="center" color="textSecondary" component="p" variant="subtitle1">Web developer blog React is Material UI site</Typography>
+    </footer>
   </>
   );
 }
